@@ -1,0 +1,23 @@
+
+
+Solution: 
+class Solution(object):
+    def isHappy(self, n):
+        seen = set()
+        
+        while n != 1:
+            # Phát hiện chu kỳ lặp
+            if n in seen:
+                return False
+            seen.add(n)
+            
+            # Tính tổng bình phương các chữ số
+            current_sum = 0
+            while n > 0:
+                digit = n % 10
+                current_sum += digit ** 2
+                n //= 10
+                
+            n = current_sum
+            
+        return True
