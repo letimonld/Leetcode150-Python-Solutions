@@ -1,0 +1,73 @@
+"""
+Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string "".
+
+The testcases will be generated such that the answer is unique.
+
+ 
+
+Example 1:
+
+Input: s = "ADOBECODEBANC", t = "ABC"
+Output: "BANC"
+Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t.
+Example 2:
+
+Input: s = "a", t = "a"
+Output: "a"
+Explanation: The entire string s is the minimum window.
+Example 3:
+
+Input: s = "a", t = "aa"
+Output: ""
+Explanation: Both 'a's from t must be included in the window.
+Since the largest window of s only has one 'a', return empty string.
+"""
+
+Solution: 
+class Solution(object):
+    def minWindow(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: str
+        """
+        if not s or not t or len(s) < len(t):
+            return ""
+
+        # Build character frequency map for t using a standard dictionary
+        t_counts = {}
+        for char in t:
+            t_counts[char] = t_counts.get(char, 0) + 1
+
+        required = len(t_counts)
+        window_counts = {}
+        formed = 0
+
+        # Stores (window_length, left_index, right_index)
+        ans = (float("inf"), None, None)
+
+        left = 0
+        for right in range(len(s)):
+            char = s[right]
+            window_counts[char] = window_counts.get(char, 0) + 1
+
+            # Check if frequency matches requirement for this character
+            if char in t_counts and window_counts[char] == t_counts[char]:
+                formed += 1
+
+            # Contract window from the left once all required characters are included
+            while left <= right and formed == required:
+                char_left = s[left]
+
+                # Update minimal window
+                if right - left + 1 < ans[0]:
+                    ans = (right - left + 1, left, right)
+
+                # Remove left character from window
+                window_counts[char_left] -= 1
+                if char_left in t_counts and window_counts[char_left] < t_counts[char_left]:
+                    formed -= 1
+
+                left += 1
+
+        return "" if ans[0] == float("inf") else s[ans[1]:ans[2] + 1]
