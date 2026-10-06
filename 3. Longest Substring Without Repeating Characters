@@ -1,0 +1,44 @@
+"""
+Given a string s, find the length of the longest substring without duplicate characters.
+
+ 
+
+Example 1:
+
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3. Note that "bca" and "cab" are also correct answers.
+Example 2:
+
+Input: s = "bbbbb"
+Output: 1
+Explanation: The answer is "b", with the length of 1.
+Example 3:
+
+Input: s = "pwwkew"
+Output: 3
+Explanation: The answer is "wke", with the length of 3.
+Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
+"""
+
+Solution:
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        char_map = {}  # Stores the last seen index of each character
+        left = 0
+        max_len = 0
+        
+        for right in range(len(s)):
+            char = s[right]
+            
+            # If character is already in window, jump left pointer
+            if char in char_map and char_map[char] >= left:
+                left = char_map[char] + 1
+                
+            # Update last seen index of the character
+            char_map[char] = right
+            
+            # Update maximum length found so far
+            max_len = max(max_len, right - left + 1)
+            
+        return max_len
