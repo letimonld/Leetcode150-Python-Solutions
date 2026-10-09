@@ -1,4 +1,0 @@
-1. for i, jump in enumerate(nums): =  for i in range(len(nums)):
-                                          jump = nums[i]
-2. min_price = float("inf"):It is a common programming pattern 
-(often used when searching for the minimum value in a collection) to initialize a tracking variable with the highest possible starting value.
